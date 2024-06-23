@@ -1,0 +1,28 @@
+```yaml
+# Configuration file for Git Operations
+
+# General settings
+git_operations:
+  # Default repository name
+  default_repo_name: "my_repository"
+  
+  # Log level for operations
+  log_level: "INFO" # Options: DEBUG, INFO, WARNING, ERROR, CRITICAL
+
+# Environment-specific settings
+environments:
+  development:
+    repo_path: "./dev_repos"
+    auto_commit: false # Enable auto commit on file addition
+  testing:
+    repo_path: "./test_repos"
+    auto_commit: false
+  production:
+    repo_path: "./prod_repos"
+    auto_commit: true
+
+# Validation settings
+validation:
+  max_repo_name_length: 50
+  allowed_characters: "^[a-zA-Z0-9_-]+$" # Alphanumeric, hyphen, and underscore
+```
