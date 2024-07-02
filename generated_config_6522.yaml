@@ -1,0 +1,30 @@
+```yaml
+# Configuration file for Git Operations
+
+# Default settings
+default:
+  repository_path: "./repos"  # Default path for repositories
+  log_level: "INFO"            # Log level for operations
+  
+# Development environment settings
+development:
+  repository_path: "./dev_repos"  # Path for development repositories
+  log_level: "DEBUG"               # More detailed logs for development
+
+# Testing environment settings
+testing:
+  repository_path: "./test_repos"  # Path for testing repositories
+  log_level: "WARNING"              # Less detailed logs for testing
+
+# Production environment settings
+production:
+  repository_path: "/var/repos"     # Path for production repositories
+  log_level: "ERROR"                 # Only log errors in production
+
+# Validation settings
+validation:
+  enable: true                       # Enable validation of configuration
+  required_fields:                   # List of required fields
+    - repository_path
+    - log_level
+```
