@@ -1,0 +1,36 @@
+```yaml
+# Configuration file for Git Operations
+
+# Environment settings
+environments:
+  development:
+    repo_path: "./dev_repositories"
+    log_level: "DEBUG"
+  testing:
+    repo_path: "./test_repositories"
+    log_level: "INFO"
+  production:
+    repo_path: "./prod_repositories"
+    log_level: "ERROR"
+
+# Default settings
+defaults:
+  max_retries: 3
+  timeout: 30  # in seconds
+
+# Validation settings
+validation:
+  enable: true
+  rules:
+    - type: "directory_exists"
+      message: "The repository directory must exist."
+    - type: "git_installed"
+      message: "Git must be installed on this system."
+
+# Example usage 
+example:
+  - environment: development
+    repo_name: "my_dev_repo"
+  - environment: production
+    repo_name: "my_prod_repo"
+```
