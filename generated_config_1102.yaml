@@ -1,0 +1,27 @@
+```yaml
+# Configuration file for GitOperations project
+
+# Default settings for different environments
+environments:
+  development:
+    debug: true                # Enable debug mode
+    repository_location: "./repos"  # Default location for repositories
+    log_level: "DEBUG"         # Log level for development
+  testing:
+    debug: false               # Disable debug mode
+    repository_location: "./test_repos"  # Location for test repositories
+    log_level: "INFO"          # Log level for testing
+  production:
+    debug: false               # Disable debug mode
+    repository_location: "/var/repos"  # Production repository location
+    log_level: "ERROR"         # Log level for production
+
+# Validation rules for configuration settings
+validation:
+  repository_location:
+    type: string               # Must be a string
+    required: true             # This field is required
+  log_level:
+    type: string               # Must be a string
+    allowed_values: ["DEBUG", "INFO", "ERROR"] # Allowed log levels
+```
