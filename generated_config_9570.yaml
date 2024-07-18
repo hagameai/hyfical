@@ -1,0 +1,26 @@
+```
+[DEFAULT]
+# Default configuration settings
+repo_directory = "repos"
+log_level = "INFO"
+
+[development]
+# Development environment settings
+repo_directory = "dev_repos"
+log_level = "DEBUG"
+
+[testing]
+# Testing environment settings
+repo_directory = "test_repos"
+log_level = "WARNING"
+
+[production]
+# Production environment settings
+repo_directory = "prod_repos"
+log_level = "ERROR"
+
+[validation]
+# Configuration validation settings
+validate_on_startup = true
+required_keys = ["repo_directory", "log_level"]
+```
