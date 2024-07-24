@@ -1,0 +1,29 @@
+```ini
+[DEFAULT]
+# Default settings for the application
+log_level = INFO
+repository_path = /path/to/repositories
+
+[development]
+# Development environment settings
+debug = True
+database_url = sqlite:///dev.db
+repository_path = /path/to/dev/repositories
+
+[testing]
+# Testing environment settings
+debug = False
+database_url = sqlite:///test.db
+repository_path = /path/to/test/repositories
+
+[production]
+# Production environment settings
+debug = False
+database_url = postgresql://user:password@localhost/prod
+repository_path = /path/to/prod/repositories
+
+[validation]
+# Validation settings
+enable = True
+rules = strict
+```
