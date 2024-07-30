@@ -1,0 +1,30 @@
+```ini
+# Configuration file for Git Operations
+
+[DEFAULT]
+# Default repository name
+repo_name = my_repo
+
+[development]
+# Development environment settings
+repo_name = dev_repo
+
+[staging]
+# Staging environment settings
+repo_name = staging_repo
+
+[production]
+# Production environment settings
+repo_name = prod_repo
+
+[validation]
+# Ensure the repo_name is a valid directory name
+valid_repo_name_regex = ^[a-zA-Z0-9_-]{1,255}$
+
+# Example usage:
+# To use in development: 
+#   from configparser import ConfigParser
+#   config = ConfigParser()
+#   config.read('config.ini')
+#   repo_name = config['development']['repo_name']
+```
