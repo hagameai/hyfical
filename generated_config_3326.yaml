@@ -1,0 +1,28 @@
+```ini
+[DEFAULT]
+# Default configuration settings
+log_level = INFO
+max_retries = 3
+
+[development]
+# Development environment configuration
+database_url = sqlite:///dev.db
+debug_mode = True
+
+[testing]
+# Testing environment configuration
+database_url = sqlite:///test.db
+debug_mode = False
+
+[production]
+# Production environment configuration
+database_url = postgres://user:pass@localhost/prod
+debug_mode = False
+
+[validation]
+# Configuration validation settings
+enable_validation = True
+required_keys = database_url, log_level
+
+# Note: Adjust the database_url for each environment as needed.
+```
