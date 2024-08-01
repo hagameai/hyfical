@@ -1,0 +1,32 @@
+```yaml
+# Configuration file for Git Operations
+
+# Default settings
+defaults:
+  repository_path: "./repositories"
+  log_level: "INFO"
+
+# Environment-specific configurations
+environments:
+  development:
+    repository_path: "./dev_repos"
+    log_level: "DEBUG"
+    
+  testing:
+    repository_path: "./test_repos"
+    log_level: "WARNING"
+    
+  production:
+    repository_path: "./prod_repos"
+    log_level: "ERROR"
+
+# Validation rules
+validation:
+  repository_name_regex: "^[a-zA-Z0-9_-]+$"
+  log_levels:
+    - "DEBUG"
+    - "INFO"
+    - "WARNING"
+    - "ERROR"
+    - "CRITICAL"
+```
