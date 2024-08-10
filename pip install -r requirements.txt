@@ -1,0 +1,47 @@
+# Project Documentation
+
+## Overview
+This project encapsulates basic Git operations using Python, allowing users to manage Git repositories programmatically.
+
+## File Structure
+- **Total Files**: 65
+- **Total Lines**: 3903
+- **File Types**:
+  - Python Files: 40 (`.py`)
+  - Markdown Files: 25 (`.md`)
+
+## Key Components
+
+### GitOperations Class
+The `GitOperations` class provides the following static methods:
+
+1. **initialize_repository(repo_name)**
+   - Initializes a new Git repository in the specified directory.
+   - **Parameters**: 
+     - `repo_name`: Name of the repository to be created.
+   - **Returns**: 
+     - `True` if successful, `False` otherwise.
+
+2. **add_file(repo_name, file_name)**
+   - Adds a specified file to the Git repository.
+
+### Unit Tests
+Unit tests are implemented using the `unittest` framework, covering functionalities of the `GitOperations` class. Key tests include:
+
+- **test_initialize_repository**: Validates successful repository initialization.
+- **test_initialize_existing_repository**: Checks behavior when initializing an existing repository.
+
+## Running Tests
+To execute unit tests, navigate to the project directory and run:
+```bash
+python -m unittest discover -s tests
+```
+
+## Installation
+Ensure Python is installed, then install necessary dependencies (if any) using:
+```bash
+pip install -r requirements.txt
+```
+
+## Contribution
+Contributions are welcome! Please fork the repository and submit a pull request with your changes.
