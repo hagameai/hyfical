@@ -1,0 +1,24 @@
+```ini
+[general]
+# Default configuration for Git operations
+
+[development]
+# Development environment settings
+repo_path = "dev_repo"
+verbose_logging = true
+
+[testing]
+# Testing environment settings
+repo_path = "test_repo"
+verbose_logging = false
+
+[production]
+# Production environment settings
+repo_path = "prod_repo"
+verbose_logging = false
+
+[validation]
+# Validate configuration settings
+validate_repo_path = true
+validate_logging_level = true
+```
