@@ -1,0 +1,29 @@
+```yaml
+# Configuration file for GitOperations
+
+# Default settings
+default:
+  repo_name: "default_repo"  # Default repository name
+  working_directory: "./"     # Default working directory
+
+# Development environment settings
+development:
+  repo_name: "dev_repo"
+  working_directory: "./dev"
+
+# Testing environment settings
+testing:
+  repo_name: "test_repo"
+  working_directory: "./test"
+
+# Production environment settings
+production:
+  repo_name: "prod_repo"
+  working_directory: "/var/repos/prod"
+
+# Validation settings
+validation:
+  enable: true                # Enable validation of repository operations
+  max_attempts: 3            # Maximum attempts for operations
+  timeout: 30                 # Timeout in seconds for operations
+```
