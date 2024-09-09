@@ -1,0 +1,31 @@
+```yaml
+# Configuration file for Git operations
+
+# Default settings
+default:
+  repo_name: "my_git_repo"  # Default repository name
+  init_branch: "main"        # Default branch name upon initialization
+  remote_url: ""             # Default remote URL (if applicable)
+
+# Environment-specific configurations
+development:
+  repo_name: "dev_repo"
+  remote_url: "https://github.com/user/dev_repo.git"
+
+staging:
+  repo_name: "staging_repo"
+  remote_url: "https://github.com/user/staging_repo.git"
+
+production:
+  repo_name: "prod_repo"
+  remote_url: "https://github.com/user/prod_repo.git"
+
+# Validation settings
+validation:
+  enabled: true    # Enable validation checks
+  rules:
+    - name: "check_repo_exists"
+      description: "Check if the repository already exists."
+    - name: "check_valid_remote"
+      description: "Validate the remote URL format."
+```
