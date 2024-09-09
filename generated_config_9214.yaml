@@ -1,0 +1,30 @@
+```ini
+# Configuration file for GitOperations project
+
+[DEFAULT]
+# Default settings
+log_level = INFO
+max_retries = 3
+
+[development]
+# Development environment configuration
+repo_path = ./dev_repos
+log_level = DEBUG
+
+[testing]
+# Testing environment configuration
+repo_path = ./test_repos
+log_level = INFO
+max_retries = 1
+
+[production]
+# Production environment configuration
+repo_path = ./prod_repos
+log_level = ERROR
+max_retries = 5
+
+# Validation settings
+[validation]
+enabled = true
+email_notifications = false
+```
