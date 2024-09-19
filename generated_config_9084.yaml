@@ -1,0 +1,28 @@
+```yaml
+# Configuration file for GitOperations
+
+# General settings
+git_operations:
+  default_repo_name: "my_repo"  # Default repository name
+  init_message: "Repository initialized successfully."  # Success message for initialization
+  error_message: "Error initializing repository: {error}"  # Error message template
+
+# Environment specific configurations
+environments:
+  development:
+    repo_path: "./dev_repos"  # Path for development repositories
+    validate: true  # Enable validation in development
+  staging:
+    repo_path: "./staging_repos"  # Path for staging repositories
+    validate: true  # Enable validation in staging
+  production:
+    repo_path: "./prod_repos"  # Path for production repositories
+    validate: false  # Disable validation in production for performance
+
+# Validation settings
+validation:
+  enabled: true  # Enable or disable validation
+  rules:
+    - check_existing_repo: true  # Check if the repository already exists
+    - check_path_permissions: true  # Check if the path has correct permissions
+```
