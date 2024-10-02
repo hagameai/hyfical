@@ -1,0 +1,32 @@
+```yaml
+# Configuration file for GitOperations project
+
+# General settings
+general:
+  log_level: INFO  # Log level for application (DEBUG, INFO, WARNING, ERROR)
+  temp_dir: /tmp/git_operations  # Temporary directory for operations
+
+# Repository settings
+repository:
+  default_name: my_repo  # Default repository name
+  base_path: ./repos    # Base path where repositories will be stored
+
+# Environment-specific settings
+environments:
+  development:
+    log_level: DEBUG  # Log level for development
+    enable_notifications: true  # Enable notifications for errors
+  testing:
+    log_level: WARNING  # Log level for testing
+    enable_notifications: false  # Disable notifications for tests
+  production:
+    log_level: ERROR  # Log level for production
+    enable_notifications: true  # Enable notifications for critical errors
+
+# Validation settings
+validation:
+  enabled: true  # Enable validation of configuration
+  rules:
+    - type: "path_exists"
+      path: "${repository.base_path}"  # Ensure base path exists
+```
