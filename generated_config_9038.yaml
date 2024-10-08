@@ -1,0 +1,27 @@
+```ini
+[DEFAULT]
+# Default configuration settings
+git_command = git
+repo_base_path = ./repositories
+log_level = INFO
+
+[development]
+# Development environment settings
+debug_mode = True
+repo_base_path = ./dev_repositories
+
+[testing]
+# Testing environment settings
+debug_mode = False
+repo_base_path = ./test_repositories
+
+[production]
+# Production environment settings
+debug_mode = False
+repo_base_path = /var/repositories
+log_level = ERROR
+
+[validation]
+# Configuration validation settings
+validate_paths = True
+```
