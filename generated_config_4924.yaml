@@ -1,29 +1,29 @@
 ```ini
-# Configuration file for GitOperations
+# Configuration file for Git Operations
 
 [DEFAULT]
 # Default repository path
-repo_path = ./repositories
+repo_path = ./repos
 # Default branch name
-branch_name = main
+default_branch = main
 
 [development]
 # Development environment settings
-repo_path = ./dev_repositories
-branch_name = dev
-
-[production]
-# Production environment settings
-repo_path = ./prod_repositories
-branch_name = master
+repo_path = ./dev_repos
+default_branch = dev
 
 [testing]
 # Testing environment settings
-repo_path = ./test_repositories
-branch_name = test
+repo_path = ./test_repos
+default_branch = test
 
-# Ensure paths are valid
+[production]
+# Production environment settings
+repo_path = ./prod_repos
+default_branch = main
+
+# Validation for the repo path
 [validation]
-# Validate if directory exists
-validate_repo_path = true
+# Ensure the repo path is a valid directory
+require_valid_path = True
 ```
