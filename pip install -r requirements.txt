@@ -1,47 +1,56 @@
 # Project Documentation
 
 ## Overview
-This project encapsulates basic Git operations using Python, allowing users to manage Git repositories programmatically.
+This project provides a set of Python classes for performing basic Git operations encapsulated in the `GitOperations` class. It includes functionality such as repository initialization and file addition.
 
 ## File Structure
-- **Total Files**: 65
-- **Total Lines**: 3903
-- **File Types**:
-  - Python Files: 40 (`.py`)
-  - Markdown Files: 25 (`.md`)
+- **Total Files:** 125
+- **Total Lines:** 7813
+- **File Types:**
+  - Python Files (`.py`): 80
+  - Markdown Files (`.md`): 45
 
-## Key Components
+## GitOperations Class
 
-### GitOperations Class
-The `GitOperations` class provides the following static methods:
+### Methods
 
-1. **initialize_repository(repo_name)**
-   - Initializes a new Git repository in the specified directory.
-   - **Parameters**: 
-     - `repo_name`: Name of the repository to be created.
-   - **Returns**: 
-     - `True` if successful, `False` otherwise.
+#### `initialize_repository(repo_name)`
+Initializes a new Git repository in the specified directory.
 
-2. **add_file(repo_name, file_name)**
-   - Adds a specified file to the Git repository.
+- **Parameters:**
+  - `repo_name` (str): The name of the repository to be created.
+- **Returns:** 
+  - `bool`: True if initialization is successful, False otherwise.
+- **Usage Example:**
+  ```python
+  GitOperations.initialize_repository("my_repo")
+  ```
 
-### Unit Tests
-Unit tests are implemented using the `unittest` framework, covering functionalities of the `GitOperations` class. Key tests include:
+#### `add_file(repo_name, file_name)`
+Adds a file to the specified Git repository.
 
-- **test_initialize_repository**: Validates successful repository initialization.
-- **test_initialize_existing_repository**: Checks behavior when initializing an existing repository.
+- **Parameters:**
+  - `repo_name` (str): The name of the repository.
+  - `file_name` (str): The name of the file to be added.
+- **Returns:** 
+  - `bool`: True if the file is added successfully, False otherwise.
+  
+## Testing
+The project includes unit tests for the `GitOperations` class using the `unittest` framework. Tests include:
 
-## Running Tests
-To execute unit tests, navigate to the project directory and run:
-```bash
-python -m unittest discover -s tests
-```
+- `test_initialize_repository`: Validates successful repository creation.
+- `test_initialize_existing_repository`: Checks handling of an existing repository scenario.
 
-## Installation
-Ensure Python is installed, then install necessary dependencies (if any) using:
-```bash
-pip install -r requirements.txt
-```
+## Setup Instructions
+1. Clone the repository.
+2. Install required dependencies with:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Run tests using:
+   ```bash
+   python -m unittest discover
+   ```
 
-## Contribution
-Contributions are welcome! Please fork the repository and submit a pull request with your changes.
+## Contribution Guidelines
+Contributions are welcome! Please ensure all code follows project conventions and includes adequate tests.
