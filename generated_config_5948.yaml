@@ -1,0 +1,26 @@
+```ini
+[DEFAULT]
+# Default configuration for Git operations
+repo_name = my_repo
+verbose = true
+
+[development]
+# Development environment settings
+repo_name = dev_repo
+verbose = true
+
+[testing]
+# Testing environment settings
+repo_name = test_repo
+verbose = false
+
+[production]
+# Production environment settings
+repo_name = prod_repo
+verbose = false
+
+[validation]
+# Validation rules for configurations
+validate_repo_name = true
+validate_verbose = true
+```
