@@ -1,0 +1,34 @@
+# Configuration file for Git Operations project
+
+# General settings
+settings:
+  # Enable verbose logging
+  verbose_logging: true
+
+# Git repository settings
+repository:
+  # Path to the local Git repository
+  path: './my_repository'
+  # Default branch to use
+  default_branch: 'main'
+
+# Environment specific settings
+environments:
+  development:
+    # Development environment settings
+    debug: true
+  production:
+    # Production environment settings
+    debug: false
+
+# Validation settings
+validation:
+  # Enable validation checks before operations
+  enable_validation: true
+  # List of required fields
+  required_fields:
+    - path
+    - default_branch
+
+# Example environment switching
+# To switch environments, modify the 'environments' section accordingly.
