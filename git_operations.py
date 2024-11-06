@@ -6,33 +6,45 @@ class GitOperations:
     A class to encapsulate basic Git operations.
     """
 
-    def __init__(self, repo_path):
+    @staticmethod
+    def clone_repository(repo_url: str, target_dir: str) -> None:
         """
-        Initializes the GitOperations with the path to the repository.
-        """
-        self.repo_path = repo_path
+        Clones a git repository into a target directory.
 
-    def clone_repo(self, repo_url):
+        :param repo_url: URL of the repository to clone.
+        :param target_dir: Directory where the repository will be cloned.
         """
-        Clones the repository from the given URL.
-        """
-        subprocess.run(['git', 'clone', repo_url], cwd=self.repo_path)
+        subprocess.run(['git', 'clone', repo_url, target_dir], check=True)
 
-    def commit_changes(self, message):
+    @staticmethod
+    def pull_latest(target_dir: str) -> None:
         """
-        Commits changes in the repository with the provided message.
-        """
-        subprocess.run(['git', 'add', '.'], cwd=self.repo_path)
-        subprocess.run(['git', 'commit', '-m', message], cwd=self.repo_path)
+        Pulls the latest changes from the remote repository into the target directory.
 
-    def push_changes(self):
+        :param target_dir: Directory of the git repository to pull from.
         """
-        Pushes committed changes to the remote repository.
-        """
-        subprocess.run(['git', 'push'], cwd=self.repo_path)
+        os.chdir(target_dir)
+        subprocess.run(['git', 'pull'], check=True)
 
-    def pull_changes(self):
+    @staticmethod
+    def create_branch(branch_name: str, target_dir: str) -> None:
         """
-        Pulls the latest changes from the remote repository.
+        Creates a new branch in the specified repository directory.
+
+        :param branch_name: Name of the new branch.
+        :param target_dir: Directory of the git repository.
         """
-        subprocess.run(['git', 'pull'], cwd=self.repo_path)
+        os.chdir(target_dir)
+        subprocess.run(['git', 'checkout', '-b', branch_name], check=True)
+
+    @staticmethod
+    def commit_changes(commit_message: str, target_dir: str) -> None:
+        """
+        Commits changes in the specified repository directory with a message.
+
+        :param commit_message: Commit message for the changes.
+        :param target_dir: Directory of the git repository.
+        """
+        os.chdir(target_dir)
+        subprocess.run(['git', 'add', '.'], check=True)
+        subprocess.run(['git', 'commit', '-m', commit_message], check=True)
