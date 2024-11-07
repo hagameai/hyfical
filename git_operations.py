@@ -6,45 +6,51 @@ class GitOperations:
     A class to encapsulate basic Git operations.
     """
 
-    @staticmethod
-    def clone_repository(repo_url: str, target_dir: str) -> None:
+    def __init__(self, repo_path):
         """
-        Clones a git repository into a target directory.
+        Initializes the GitOperations with the given repository path.
+        :param repo_path: Path to the Git repository.
+        """
+        self.repo_path = repo_path
 
+    def run_command(self, command):
+        """
+        Runs a shell command in the repository path.
+        :param command: Command to be executed.
+        """
+        result = subprocess.run(command, cwd=self.repo_path, shell=True,
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                 text=True)
+        return result.stdout, result.stderr
+
+    def clone(self, repo_url):
+        """
+        Clones a Git repository from the given URL.
         :param repo_url: URL of the repository to clone.
-        :param target_dir: Directory where the repository will be cloned.
         """
-        subprocess.run(['git', 'clone', repo_url, target_dir], check=True)
+        command = f'git clone {repo_url}'
+        return self.run_command(command)
 
-    @staticmethod
-    def pull_latest(target_dir: str) -> None:
+    def commit(self, message):
         """
-        Pulls the latest changes from the remote repository into the target directory.
+        Commits changes in the repository with a given message.
+        :param message: Commit message.
+        """
+        command = f'git commit -m "{message}"'
+        return self.run_command(command)
 
-        :param target_dir: Directory of the git repository to pull from.
+    def push(self, branch='main'):
         """
-        os.chdir(target_dir)
-        subprocess.run(['git', 'pull'], check=True)
+        Pushes changes to the specified branch.
+        :param branch: Branch to push changes to.
+        """
+        command = f'git push origin {branch}'
+        return self.run_command(command)
 
-    @staticmethod
-    def create_branch(branch_name: str, target_dir: str) -> None:
+    def pull(self, branch='main'):
         """
-        Creates a new branch in the specified repository directory.
-
-        :param branch_name: Name of the new branch.
-        :param target_dir: Directory of the git repository.
+        Pulls changes from the specified branch.
+        :param branch: Branch to pull changes from.
         """
-        os.chdir(target_dir)
-        subprocess.run(['git', 'checkout', '-b', branch_name], check=True)
-
-    @staticmethod
-    def commit_changes(commit_message: str, target_dir: str) -> None:
-        """
-        Commits changes in the specified repository directory with a message.
-
-        :param commit_message: Commit message for the changes.
-        :param target_dir: Directory of the git repository.
-        """
-        os.chdir(target_dir)
-        subprocess.run(['git', 'add', '.'], check=True)
-        subprocess.run(['git', 'commit', '-m', commit_message], check=True)
+        command = f'git pull origin {branch}'
+        return self.run_command(command)
