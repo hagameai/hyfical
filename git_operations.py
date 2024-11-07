@@ -3,54 +3,41 @@ import subprocess
 
 class GitOperations:
     """
-    A class to encapsulate basic Git operations.
+    A class to encapsulate basic Git operations such as clone, commit, push, and pull.
     """
 
     def __init__(self, repo_path):
         """
-        Initializes the GitOperations with the given repository path.
-        :param repo_path: Path to the Git repository.
+        Initialize the GitOperations with the repository path.
         """
         self.repo_path = repo_path
 
-    def run_command(self, command):
-        """
-        Runs a shell command in the repository path.
-        :param command: Command to be executed.
-        """
-        result = subprocess.run(command, cwd=self.repo_path, shell=True,
-                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                 text=True)
-        return result.stdout, result.stderr
-
     def clone(self, repo_url):
         """
-        Clones a Git repository from the given URL.
-        :param repo_url: URL of the repository to clone.
+        Clone a Git repository from the given URL.
+        :param repo_url: The URL of the repository to clone.
         """
-        command = f'git clone {repo_url}'
-        return self.run_command(command)
+        subprocess.run(['git', 'clone', repo_url], check=True)
 
     def commit(self, message):
         """
-        Commits changes in the repository with a given message.
-        :param message: Commit message.
+        Commit changes in the repository with the provided message.
+        :param message: The commit message.
         """
-        command = f'git commit -m "{message}"'
-        return self.run_command(command)
+        os.chdir(self.repo_path)
+        subprocess.run(['git', 'add', '.'], check=True)
+        subprocess.run(['git', 'commit', '-m', message], check=True)
 
-    def push(self, branch='main'):
+    def push(self):
         """
-        Pushes changes to the specified branch.
-        :param branch: Branch to push changes to.
+        Push committed changes to the remote repository.
         """
-        command = f'git push origin {branch}'
-        return self.run_command(command)
+        os.chdir(self.repo_path)
+        subprocess.run(['git', 'push'], check=True)
 
-    def pull(self, branch='main'):
+    def pull(self):
         """
-        Pulls changes from the specified branch.
-        :param branch: Branch to pull changes from.
+        Pull the latest changes from the remote repository.
         """
-        command = f'git pull origin {branch}'
-        return self.run_command(command)
+        os.chdir(self.repo_path)
+        subprocess.run(['git', 'pull'], check=True)
