@@ -8,45 +8,38 @@ class GitOperations:
 
     def __init__(self, repo_path):
         """
-        Initialize the GitOperations with the path to the repository.
-        :param repo_path: Path to the git repository.
+        Initialize with the path to the Git repository.
         """
         self.repo_path = repo_path
 
-    def run_command(self, command):
+    def clone_repo(self, repo_url):
         """
-        Run a shell command in the repository.
-        :param command: Command to run.
-        :return: Output of the command.
+        Clone a Git repository from the given URL.
         """
-        try:
-            result = subprocess.run(command, cwd=self.repo_path, text=True, capture_output=True, check=True)
-            return result.stdout
-        except subprocess.CalledProcessError as e:
-            return e.stderr
+        subprocess.run(['git', 'clone', repo_url], cwd=self.repo_path)
 
-    def clone(self, repo_url):
+    def commit_changes(self, message):
         """
-        Clone a git repository.
-        :param repo_url: URL of the repository to clone.
+        Commit changes in the repository with a provided message.
         """
-        return self.run_command(['git', 'clone', repo_url])
+        subprocess.run(['git', 'add', '.'], cwd=self.repo_path)
+        subprocess.run(['git', 'commit', '-m', message], cwd=self.repo_path)
 
-    def pull(self):
+    def push_changes(self):
         """
-        Pull the latest changes from the remote repository.
+        Push committed changes to the remote repository.
         """
-        return self.run_command(['git', 'pull'])
+        subprocess.run(['git', 'push'], cwd=self.repo_path)
 
-    def commit(self, message):
+    def pull_changes(self):
         """
-        Commit changes to the repository with a message.
-        :param message: Commit message.
+        Pull changes from the remote repository.
         """
-        return self.run_command(['git', 'commit', '-m', message])
+        subprocess.run(['git', 'pull'], cwd=self.repo_path)
 
-    def push(self):
+    def get_status(self):
         """
-        Push local commits to the remote repository.
+        Get the current status of the repository.
         """
-        return self.run_command(['git', 'push'])
+        result = subprocess.run(['git', 'status'], cwd=self.repo_path, capture_output=True, text=True)
+        return result.stdout
