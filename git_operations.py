@@ -3,43 +3,62 @@ import subprocess
 
 class GitOperations:
     """
-    A class to encapsulate basic Git operations such as clone, pull, and commit.
+    A class to encapsulate basic Git operations.
     """
 
-    def __init__(self, repo_url, local_dir):
+    def __init__(self, repo_path):
         """
-        Initializes the GitOperations with the repository URL and local directory.
-        :param repo_url: URL of the Git repository
-        :param local_dir: Local directory to clone the repository into
+        Initializes the GitOperations with the path to the repository.
+        :param repo_path: The path to the git repository.
         """
-        self.repo_url = repo_url
-        self.local_dir = local_dir
+        self.repo_path = repo_path
 
-    def clone(self):
+    def run_command(self, command):
         """
-        Clones the specified repository into the local directory.
+        Executes a git command in the repository.
+        :param command: The git command to execute.
+        :return: The output of the command.
         """
-        subprocess.run(['git', 'clone', self.repo_url, self.local_dir], check=True)
+        result = subprocess.run(command, cwd=self.repo_path, shell=True,
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE,
+                                 text=True)
+        if result.returncode != 0:
+            raise Exception(f'Error executing command: {command}\n{result.stderr}')
+        return result.stdout
 
-    def pull(self):
+    def clone(self, repo_url):
         """
-        Pulls the latest changes from the remote repository.
+        Clones a git repository from the given URL.
+        :param repo_url: The URL of the repository to clone.
         """
-        os.chdir(self.local_dir)
-        subprocess.run(['git', 'pull'], check=True)
+        command = f'git clone {repo_url}'
+        self.run_command(command)
 
     def commit(self, message):
         """
-        Commits changes in the local repository with the specified message.
-        :param message: Commit message
+        Commits changes in the repository with the provided message.
+        :param message: The commit message.
         """
-        os.chdir(self.local_dir)
-        subprocess.run(['git', 'add', '.'], check=True)
-        subprocess.run(['git', 'commit', '-m', message], check=True)
+        self.run_command('git add .')
+        command = f'git commit -m "{message}"'
+        self.run_command(command)
 
     def push(self):
         """
-        Pushes committed changes to the remote repository.
+        Pushes changes to the remote repository.
         """
-        os.chdir(self.local_dir)
-        subprocess.run(['git', 'push'], check=True)
+        self.run_command('git push')
+
+    def pull(self):
+        """
+        Pulls changes from the remote repository.
+        """
+        self.run_command('git pull')
+
+    def status(self):
+        """
+        Returns the current status of the repository.
+        :return: The output of 'git status'.
+        """
+        return self.run_command('git status')
