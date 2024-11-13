@@ -1,34 +1,25 @@
 # Configuration file for Git Operations project
 
-# General settings
-settings:
-  # Enable verbose logging
-  verbose_logging: true
-
-# Git repository settings
-repository:
-  # Path to the local Git repository
-  path: './my_repository'
-  # Default branch to use
-  default_branch: 'main'
-
-# Environment specific settings
+# Environment settings
 environments:
   development:
-    # Development environment settings
-    debug: true
+    git_directory: "/path/to/development/repo"
+    log_level: "DEBUG"
+  testing:
+    git_directory: "/path/to/testing/repo"
+    log_level: "INFO"
   production:
-    # Production environment settings
-    debug: false
+    git_directory: "/path/to/production/repo"
+    log_level: "ERROR"
+
+# Common settings
+common:
+  timeout: 30  # Timeout for Git operations in seconds
+  retry_attempts: 3  # Number of retry attempts for failed operations
 
 # Validation settings
 validation:
-  # Enable validation checks before operations
-  enable_validation: true
-  # List of required fields
-  required_fields:
-    - path
-    - default_branch
-
-# Example environment switching
-# To switch environments, modify the 'environments' section accordingly.
+  enabled: true
+  rules:
+    - check_git_installed: true
+    - check_repo_access: true
