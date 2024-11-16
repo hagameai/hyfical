@@ -8,51 +8,48 @@ class GitOperations:
 
     def __init__(self, repo_path):
         """
-        Initialize with the path to the repository.
+        Initializes the GitOperations with the path to the repository.
         """
         self.repo_path = repo_path
 
     def run_command(self, command):
         """
-        Run a shell command in the repository.
+        Executes a given shell command in the repository path.
         """
-        result = subprocess.run(command, shell=True, cwd=self.repo_path,
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE,
-                                text=True)
-        return result.stdout, result.stderr
+        try:
+            result = subprocess.run(command, cwd=self.repo_path, check=True,
+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            return result.stdout.decode('utf-8')
+        except subprocess.CalledProcessError as e:
+            print(f"Error: {e.stderr.decode('utf-8')}")
+            return None
 
     def clone(self, repo_url):
         """
-        Clone a Git repository from the given URL.
+        Clones a repository from the given URL.
         """
-        command = f'git clone {repo_url}'
-        return self.run_command(command)
+        return self.run_command(['git', 'clone', repo_url])
 
     def pull(self):
         """
-        Pull the latest changes from the remote repository.
+        Pulls the latest changes from the remote repository.
         """
-        command = 'git pull'
-        return self.run_command(command)
+        return self.run_command(['git', 'pull'])
+
+    def add(self, file_pattern):
+        """
+        Stages changes for commit based on the file pattern.
+        """
+        return self.run_command(['git', 'add', file_pattern])
 
     def commit(self, message):
         """
-        Commit changes with a given commit message.
+        Commits the staged changes with a given message.
         """
-        command = f'git commit -m "{message}"'
-        return self.run_command(command)
+        return self.run_command(['git', 'commit', '-m', message])
 
     def push(self):
         """
-        Push local changes to the remote repository.
+        Pushes the committed changes to the remote repository.
         """
-        command = 'git push'
-        return self.run_command(command)
-
-    def status(self):
-        """
-        Get the status of the repository.
-        """
-        command = 'git status'
-        return self.run_command(command)
+        return self.run_command(['git', 'push'])
