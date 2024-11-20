@@ -8,57 +8,60 @@ class GitOperations:
 
     def __init__(self, repo_path):
         """
-        Initializes the GitOperations with the specified repository path.
-        :param repo_path: Path to the Git repository.
+        Initialize GitOperations with the path to the repository.
+        :param repo_path: Path to the local Git repository.
         """
         self.repo_path = repo_path
 
-    def run_command(self, command):
+    def execute_command(self, command):
         """
-        Runs a shell command in the repository path.
-        :param command: Command to run.
+        Execute a shell command in the repository directory.
+        :param command: Command to be executed.
         :return: Output of the command.
         """
-        result = subprocess.run(command, shell=True, cwd=self.repo_path,
-                                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                text=True)
-        return result.stdout.strip() if result.returncode == 0 else result.stderr.strip()
+        try:
+            result = subprocess.run(command, cwd=self.repo_path, 
+                                    shell=True, check=True, 
+                                    stdout=subprocess.PIPE, 
+                                    stderr=subprocess.PIPE, text=True)
+            return result.stdout
+        except subprocess.CalledProcessError as e:
+            return e.stderr
 
-    def clone_repo(self, repo_url):
+    def clone(self, repo_url):
         """
-        Clones a Git repository from the specified URL.
-        :param repo_url: URL of the repository to clone.
+        Clone a remote repository to the local path.
+        :param repo_url: URL of the remote repository.
         """
-        return self.run_command(f'git clone {repo_url}')
+        command = f'git clone {repo_url}'
+        return self.execute_command(command)
 
-    def pull_repo(self):
+    def pull(self):
         """
-        Pulls the latest changes from the remote repository.
+        Pull the latest changes from the remote repository.
         """
-        return self.run_command('git pull')
+        command = 'git pull'
+        return self.execute_command(command)
 
-    def commit_changes(self, message):
+    def commit(self, message):
         """
-        Commits changes to the local repository.
+        Commit changes in the repository with a message.
         :param message: Commit message.
         """
-        self.run_command('git add .')
-        return self.run_command(f'git commit -m "{message}"')
+        command = f'git commit -m "{message}"'
+        return self.execute_command(command)
 
-    def push_changes(self):
+    def push(self):
         """
-        Pushes committed changes to the remote repository.
+        Push local changes to the remote repository.
         """
-        return self.run_command('git push')
+        command = 'git push'
+        return self.execute_command(command)
 
     def status(self):
         """
-        Returns the current status of the Git repository.
+        Get the current status of the repository.
+        :return: Status output.
         """
-        return self.run_command('git status')
-
-    def log(self):
-        """
-        Returns the commit log of the repository.
-        """
-        return self.run_command('git log')
+        command = 'git status'
+        return self.execute_command(command)
