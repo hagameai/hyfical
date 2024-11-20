@@ -8,60 +8,72 @@ class GitOperations:
 
     def __init__(self, repo_path):
         """
-        Initialize GitOperations with the path to the repository.
+        Initializes the GitOperations with the path to the repository.
         :param repo_path: Path to the local Git repository.
         """
         self.repo_path = repo_path
 
-    def execute_command(self, command):
+    def run_command(self, command):
         """
-        Execute a shell command in the repository directory.
-        :param command: Command to be executed.
+        Runs a Git command in the repository's context.
+        :param command: The Git command to run.
         :return: Output of the command.
         """
         try:
-            result = subprocess.run(command, cwd=self.repo_path, 
-                                    shell=True, check=True, 
-                                    stdout=subprocess.PIPE, 
-                                    stderr=subprocess.PIPE, text=True)
+            result = subprocess.run(command, cwd=self.repo_path, text=True,
+                                    capture_output=True, check=True)
             return result.stdout
         except subprocess.CalledProcessError as e:
             return e.stderr
 
     def clone(self, repo_url):
         """
-        Clone a remote repository to the local path.
-        :param repo_url: URL of the remote repository.
+        Clones a repository from a given URL.
+        :param repo_url: URL of the repository to clone.
+        :return: Output of the clone command.
         """
-        command = f'git clone {repo_url}'
-        return self.execute_command(command)
-
-    def pull(self):
-        """
-        Pull the latest changes from the remote repository.
-        """
-        command = 'git pull'
-        return self.execute_command(command)
+        return self.run_command(['git', 'clone', repo_url])
 
     def commit(self, message):
         """
-        Commit changes in the repository with a message.
+        Commits changes in the repository with a message.
         :param message: Commit message.
+        :return: Output of the commit command.
         """
-        command = f'git commit -m "{message}"'
-        return self.execute_command(command)
+        return self.run_command(['git', 'commit', '-m', message])
 
     def push(self):
         """
-        Push local changes to the remote repository.
+        Pushes changes to the remote repository.
+        :return: Output of the push command.
         """
-        command = 'git push'
-        return self.execute_command(command)
+        return self.run_command(['git', 'push'])
+
+    def pull(self):
+        """
+        Pulls changes from the remote repository.
+        :return: Output of the pull command.
+        """
+        return self.run_command(['git', 'pull'])
 
     def status(self):
         """
-        Get the current status of the repository.
-        :return: Status output.
+        Gets the status of the repository.
+        :return: Output of the status command.
         """
-        command = 'git status'
-        return self.execute_command(command)
+        return self.run_command(['git', 'status'])
+
+    def log(self):
+        """
+        Gets the commit log of the repository.
+        :return: Output of the log command.
+        """
+        return self.run_command(['git', 'log'])
+
+    def add(self, file_path):
+        """
+        Adds a file to the staging area.
+        :param file_path: Path of the file to add.
+        :return: Output of the add command.
+        """
+        return self.run_command(['git', 'add', file_path])
