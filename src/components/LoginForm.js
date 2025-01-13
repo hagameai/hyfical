@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 
+/**
+ * LoginForm component for user authentication.
+ * This component handles the login logic and user input.
+ */
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -7,8 +11,9 @@ const LoginForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // TODO: Implement login logic using the API
-        console.log('Email:', email, 'Password:', password);
+        // Implement login logic here (API call)
+        // Example: authenticateUser(email, password)
+        // if failed, setError('Invalid credentials');
     };
 
     return (
@@ -31,7 +36,7 @@ const LoginForm = () => {
                     required
                 />
             </div>
-            {error && <p className="error">{error}</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <button type="submit">Login</button>
         </form>
     );
