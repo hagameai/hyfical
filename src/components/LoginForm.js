@@ -2,41 +2,40 @@ import React, { useState } from 'react';
 
 /**
  * LoginForm component for user authentication.
- * This component handles the login logic and user input.
+ * It collects user credentials and handles login functionality.
  */
 const LoginForm = () => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Implement login logic here (API call)
-        // Example: authenticateUser(email, password)
-        // if failed, setError('Invalid credentials');
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // Handle login logic here
+        console.log('Logging in with:', { username, password });
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <label>Email:</label>
-                <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                <label htmlFor="username">Username:</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    value={username} 
+                    onChange={(e) => setUsername(e.target.value)} 
                     required
                 />
             </div>
             <div>
-                <label>Password:</label>
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                <label htmlFor="password">Password:</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
                     required
                 />
             </div>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
             <button type="submit">Login</button>
         </form>
     );
