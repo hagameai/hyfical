@@ -1,41 +1,50 @@
 import React, { useState } from 'react';
 
 /**
- * LoginForm component for user authentication.
- * It collects user credentials and handles login functionality.
+ * LoginForm Component
+ * 
+ * This component provides a user interface for logging in. It includes fields for the username and password,
+ * and a submit button to send the credentials to the authentication API.
  */
 const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        // TODO: Implement API call for authentication
         // Handle login logic here
-        console.log('Logging in with:', { username, password });
+
+        // Example placeholder response
+        const mockResponse = { success: false, message: 'Invalid credentials' };
+
+        if (!mockResponse.success) {
+            setError(mockResponse.message);
+        }
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <label htmlFor="username">Username:</label>
+                <label>Username:</label>
                 <input 
                     type="text" 
-                    id="username" 
                     value={username} 
                     onChange={(e) => setUsername(e.target.value)} 
-                    required
+                    required 
                 />
             </div>
             <div>
-                <label htmlFor="password">Password:</label>
+                <label>Password:</label>
                 <input 
                     type="password" 
-                    id="password" 
                     value={password} 
                     onChange={(e) => setPassword(e.target.value)} 
-                    required
+                    required 
                 />
             </div>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <button type="submit">Login</button>
         </form>
     );
