@@ -1,45 +1,53 @@
+// src/api/data.js
+
 const express = require('express');
 const router = express.Router();
 const DataModel = require('../models/dataModel');
 
-// Create a new data entry
+// Create new data
 router.post('/', async (req, res) => {
     try {
-        const newData = new DataModel(req.body);
-        await newData.save();
-        res.status(201).json(newData);
+        const data = new DataModel(req.body);
+        await data.save();
+        res.status(201).send(data);
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(400).send(error);
     }
 });
 
-// Get all data entries
+// Read data
 router.get('/', async (req, res) => {
     try {
         const data = await DataModel.find();
-        res.status(200).json(data);
+        res.status(200).send(data);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).send(error);
     }
 });
 
-// Update a data entry
-router.put('/:id', async (req, res) => {
+// Update data
+router.patch('/:id', async (req, res) => {
     try {
-        const updatedData = await DataModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        res.status(200).json(updatedData);
+        const data = await DataModel.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        if (!data) {
+            return res.status(404).send();
+        }
+        res.status(200).send(data);
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(400).send(error);
     }
 });
 
-// Delete a data entry
+// Delete data
 router.delete('/:id', async (req, res) => {
     try {
-        await DataModel.findByIdAndDelete(req.params.id);
-        res.status(204).send();
+        const data = await DataModel.findByIdAndDelete(req.params.id);
+        if (!data) {
+            return res.status(404).send();
+        }
+        res.status(200).send(data);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).send(error);
     }
 });
 
