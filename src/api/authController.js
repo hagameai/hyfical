@@ -1,37 +1,31 @@
-// authController.js
-
 const User = require('../models/userModel');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 // Register a new user
 exports.register = async (req, res) => {
     const { username, password } = req.body;
-    try {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({ username, password: hashedPassword });
-        await user.save();
-        res.status(201).json({ message: 'User created successfully' });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    // Check for existing user
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+        return res.status(400).json({ message: 'User already exists' });
     }
+    // Create new user
+    const newUser = new User({ username, password });
+    await newUser.save();
+    return res.status(201).json({ message: 'User registered successfully' });
 };
 
-// User login
+// Login user
 exports.login = async (req, res) => {
     const { username, password } = req.body;
-    try {
-        const user = await User.findOne({ username });
-        if (!user) return res.status(400).json({ message: 'User not found' });
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
-
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    // Validate user credentials
+    const user = await User.findOne({ username });
+    if (!user || !(await user.isCorrectPassword(password))) {
+        return res.status(401).json({ message: 'Invalid credentials' });
     }
+    // Generate JWT token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    return res.status(200).json({ token });
 };
 
-// Export the controller
-module.exports = { register, login };
+// Export other functionalities as needed
