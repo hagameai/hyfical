@@ -1,40 +1,41 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/userModel');
+// authController.js
 
-// Register a new user
+const authService = require('./authService');
+
+/**
+ * Handles user registration.
+ * @param {Object} req - The request object containing user data.
+ * @param {Object} res - The response object to send data back.
+ */
 exports.register = async (req, res) => {
-    const { username, password } = req.body;
     try {
-        const user = new User({ username, password });
-        await user.save();
-        res.status(201).json({ message: 'User registered successfully' });
+        const user = await authService.registerUser(req.body);
+        res.status(201).json({ message: 'User registered successfully', user });
     } catch (error) {
-        res.status(400).json({ error: 'Error registering user' });
+        res.status(400).json({ message: error.message });
     }
 };
 
-// User login
+/**
+ * Handles user login.
+ * @param {Object} req - The request object containing login data.
+ * @param {Object} res - The response object to send data back.
+ */
 exports.login = async (req, res) => {
-    const { username, password } = req.body;
     try {
-        const user = await User.findOne({ username });
-        if (!user || !(await user.comparePassword(password))) {
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token });
+        const token = await authService.loginUser(req.body);
+        res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
-        res.status(500).json({ error: 'Server error' });
+        res.status(401).json({ message: error.message });
     }
 };
 
-// Middleware to authenticate users
-exports.authenticate = (req, res, next) => {
-    const token = req.headers['authorization'];
-    if (!token) return res.status(403).json({ error: 'No token provided' });
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) return res.status(401).json({ error: 'Unauthorized' });
-        req.userId = decoded.id;
-        next();
-    });
+/**
+ * Handles user logout.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object to send data back.
+ */
+exports.logout = (req, res) => {
+    // Implement logout logic (e.g., invalidate token)
+    res.status(200).json({ message: 'User logged out successfully' });
 };
