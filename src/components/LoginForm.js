@@ -1,50 +1,44 @@
 import React, { useState } from 'react';
 
 /**
- * LoginForm Component
- * 
- * This component provides a user interface for logging in. It includes fields for the username and password,
- * and a submit button to send the credentials to the authentication API.
+ * LoginForm component for user authentication.
+ * It handles user login by capturing the username and password,
+ * and calling the authentication service to log the user in.
  */
 const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        // TODO: Implement API call for authentication
-        // Handle login logic here
-
-        // Example placeholder response
-        const mockResponse = { success: false, message: 'Invalid credentials' };
-
-        if (!mockResponse.success) {
-            setError(mockResponse.message);
-        }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        // Call authentication service here
+        // If fails, set error message
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <label>Username:</label>
-                <input 
-                    type="text" 
-                    value={username} 
-                    onChange={(e) => setUsername(e.target.value)} 
-                    required 
+                <label htmlFor="username">Username:</label>
+                <input
+                    type="text"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
                 />
             </div>
             <div>
-                <label>Password:</label>
-                <input 
-                    type="password" 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
-                    required 
+                <label htmlFor="password">Password:</label>
+                <input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
                 />
             </div>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p className="error">{error}</p>}
             <button type="submit">Login</button>
         </form>
     );
