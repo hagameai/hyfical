@@ -2,29 +2,29 @@ import React, { useState } from 'react';
 
 /**
  * LoginForm component for user authentication.
- * It handles user login by capturing the username and password,
- * and calling the authentication service to log the user in.
+ * Allows users to enter their credentials and submit them for login.
  */
 const LoginForm = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        // Call authentication service here
-        // If fails, set error message
+        // TODO: Implement login functionality
+        // Use authService to handle authentication
+        // If login fails, set error message
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <label htmlFor="username">Username:</label>
+                <label htmlFor="email">Email:</label>
                 <input
-                    type="text"
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                 />
             </div>
@@ -38,7 +38,7 @@ const LoginForm = () => {
                     required
                 />
             </div>
-            {error && <p className="error">{error}</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <button type="submit">Login</button>
         </form>
     );
