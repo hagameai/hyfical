@@ -1,39 +1,33 @@
 import React, { useState } from 'react';
 
-/**
- * LoginForm component for user authentication.
- * Allows users to enter their credentials and submit them for login.
- */
-const LoginForm = () => {
+const LoginForm = ({ onLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState(null);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // TODO: Implement login functionality
-        // Use authService to handle authentication
-        // If login fails, set error message
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // Call the onLogin prop with email and password
+        onLogin(email, password)
+            .catch(err => setError(err.message));
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <label htmlFor="email">Email:</label>
-                <input
-                    type="email"
-                    id="email"
-                    value={email}
+                <label>Email:</label>
+                <input 
+                    type="email" 
+                    value={email} 
                     onChange={(e) => setEmail(e.target.value)}
                     required
                 />
             </div>
             <div>
-                <label htmlFor="password">Password:</label>
-                <input
-                    type="password"
-                    id="password"
-                    value={password}
+                <label>Password:</label>
+                <input 
+                    type="password" 
+                    value={password} 
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
