@@ -1,21 +1,18 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-const LoginForm = () => {
+const LoginForm = ({ onLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        setError(null);
-        // Implement authentication logic here
-        try {
-            // Call the authentication API
-            // const response = await authApi.login(email, password);
-            // Handle response
-        } catch (err) {
-            setError('Login failed. Please try again.');
+        if (!email || !password) {
+            setError('Email and Password are required.');
+            return;
         }
+        onLogin({ email, password });
     };
 
     return (
@@ -38,10 +35,14 @@ const LoginForm = () => {
                     required
                 />
             </div>
-            {error && <p>{error}</p>}
+            {error && <div className="error">{error}</div>}
             <button type="submit">Login</button>
         </form>
     );
+};
+
+LoginForm.propTypes = {
+    onLogin: PropTypes.func.isRequired,
 };
 
 export default LoginForm;
