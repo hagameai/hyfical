@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        trim: true,
+        trim: true
     },
     password: {
         type: String,
@@ -16,16 +16,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        trim: true,
-        lowercase: true,
+        trim: true
     },
     createdAt: {
         type: Date,
-        default: Date.now,
-    },
+        default: Date.now
+    }
 });
 
-// Create the User model
+// Create the User model from the schema
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
