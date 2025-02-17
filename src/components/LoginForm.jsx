@@ -1,44 +1,39 @@
 import React, { useState } from 'react';
 
-const LoginForm = ({ onLogin }) => {
-    const [email, setEmail] = useState('');
+/**
+ * LoginForm component handles user login.
+ * It includes input fields for username and password,
+ * and a button to submit the login request.
+ */
+const LoginForm = () => {
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!email || !password) {
-            setError('Email and password are required.');
-            return;
-        }
-        // Call the onLogin prop with email and password
-        onLogin({ email, password });
-        // Clear fields
-        setEmail('');
-        setPassword('');
-        setError('');
+        // Logic to handle login goes here
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <h2>Login</h2>
-            {error && <p className="error">{error}</p>}
             <div>
-                <label>Email:</label>
-                <input 
-                    type="email" 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                    required 
+                <label htmlFor="username">Username:</label>
+                <input
+                    type="text"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
                 />
             </div>
             <div>
-                <label>Password:</label>
-                <input 
-                    type="password" 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
-                    required 
+                <label htmlFor="password">Password:</label>
+                <input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
                 />
             </div>
             <button type="submit">Login</button>
