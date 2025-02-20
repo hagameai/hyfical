@@ -1,40 +1,34 @@
-// authController.js
-
-const authService = require('../utils/authService');
+const jwt = require('jsonwebtoken');
+const User = require('../models/userModel');
 
 /**
- * Handles user authentication requests.
+ * Handles user registration.
+ * @param {Object} req - The request object containing user data.
+ * @param {Object} res - The response object.
  */
-class AuthController {
-    /**
-     * Registers a new user.
-     * @param {Object} req - The request object containing user data.
-     * @param {Object} res - The response object.
-     * @returns {Promise<void>}
-     */
-    async register(req, res) {
-        try {
-            const user = await authService.registerUser(req.body);
-            res.status(201).json(user);
-        } catch (error) {
-            res.status(400).json({ message: error.message });
-        }
-    }
+exports.register = async (req, res) => {
+    const { username, password } = req.body;
+    // Add logic for password hashing and user creation
+};
 
-    /**
-     * Authenticates a user and returns a JWT.
-     * @param {Object} req - The request object containing user credentials.
-     * @param {Object} res - The response object.
-     * @returns {Promise<void>}
-     */
-    async login(req, res) {
-        try {
-            const token = await authService.authenticateUser(req.body);
-            res.status(200).json({ token });
-        } catch (error) {
-            res.status(401).json({ message: error.message });
-        }
-    }
-}
+/**
+ * Handles user login.
+ * @param {Object} req - The request object containing login data.
+ * @param {Object} res - The response object.
+ */
+exports.login = async (req, res) => {
+    const { username, password } = req.body;
+    // Add logic for user authentication
+    // Generate and return JWT token
+};
 
-module.exports = new AuthController();
+/**
+ * Middleware to authenticate user using JWT.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ */
+exports.authenticate = (req, res, next) => {
+    const token = req.headers['authorization'];
+    // Verify token and proceed
+};
