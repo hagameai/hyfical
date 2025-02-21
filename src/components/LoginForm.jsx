@@ -1,55 +1,46 @@
 import React, { useState } from 'react';
 
 /**
- * LoginForm component allows users to log in by entering their credentials.
- * It handles form submission and displays error messages if the login fails.
+ * LoginForm component handles user login.
+ * It captures user credentials and triggers the login process.
+ *
+ * @returns {JSX.Element} The rendered LoginForm component.
  */
 const LoginForm = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setError('');
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // TODO: Implement login logic using authService
+        console.log('Logging in with', username, password);
+    };
 
-    try {
-      // Implement authentication logic here
-      // For example, send a request to the server to log in
-      // const response = await authService.login(email, password);
-
-      console.log('Logged in:', email);
-    } catch (err) {
-      setError('Login failed. Please check your credentials.');
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <button type="submit">Login</button>
-    </form>
-  );
+    return (
+        <form onSubmit={handleSubmit}>
+            <div>
+                <label htmlFor="username">Username:</label>
+                <input
+                    type="text"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                />
+            </div>
+            <div>
+                <label htmlFor="password">Password:</label>
+                <input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    );
 };
 
 export default LoginForm;
