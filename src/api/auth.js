@@ -1,40 +1,28 @@
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const UserModel = require('../models/userModel');
+const User = require('../models/userModel');
 
-/**
- * User Authentication Controller
- */
-const AuthController = {
-    /**
-     * Register a new user
-     * @param {Object} req - Express request object
-     * @param {Object} res - Express response object
-     * @returns {Promise<void>}
-     */
-    register: async (req, res) => {
-        const { username, password } = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new UserModel({ username, password: hashedPassword });
-        await user.save();
-        res.status(201).send({ message: 'User registered successfully' });
-    },
-
-    /**
-     * Login a user
-     * @param {Object} req - Express request object
-     * @param {Object} res - Express response object
-     * @returns {Promise<void>}
-     */
-    login: async (req, res) => {
-        const { username, password } = req.body;
-        const user = await UserModel.findOne({ username });
-        if (!user || !(await bcrypt.compare(password, user.password))) {
-            return res.status(403).send({ message: 'Invalid credentials' });
+// User authentication controller
+exports.login = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const user = await User.findOne({ email });
+        if (!user || !(await user.comparePassword(password))) {
+            return res.status(401).json({ message: 'Invalid email or password' });
         }
-        const token = jwt.sign({ id: user._id }, 'secret', { expiresIn: '1h' });
-        res.send({ token });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.status(200).json({ token });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
     }
 };
 
-module.exports = AuthController;
+exports.register = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const newUser = new User({ email, password });
+        await newUser.save();
+        res.status(201).json({ message: 'User created' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+};
