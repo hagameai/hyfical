@@ -1,28 +1,34 @@
+const express = require('express');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 
-// User authentication controller
-exports.login = async (req, res) => {
-    const { email, password } = req.body;
-    try {
-        const user = await User.findOne({ email });
-        if (!user || !(await user.comparePassword(password))) {
-            return res.status(401).json({ message: 'Invalid email or password' });
-        }
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.status(200).json({ token });
-    } catch (error) {
-        res.status(500).json({ message: 'Server error' });
-    }
-};
+const router = express.Router();
 
-exports.register = async (req, res) => {
-    const { email, password } = req.body;
+// User Registration
+router.post('/register', async (req, res) => {
+    const { username, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ username, password: hashedPassword });
     try {
-        const newUser = new User({ email, password });
         await newUser.save();
-        res.status(201).json({ message: 'User created' });
+        res.status(201).json({ message: 'User created successfully' });
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+        res.status(400).json({ error: 'User registration failed' });
     }
-};
+});
+
+// User Login
+router.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) return res.status(401).json({ error: 'Invalid password' });
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    res.json({ token });
+});
+
+module.exports = router;
