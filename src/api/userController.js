@@ -1,40 +1,46 @@
 // userController.js
 
+// Import necessary modules
 const UserService = require('../api/authService');
 
 /**
- * User controller for handling user-related requests.
+ * Controller for handling user-related requests.
  */
 class UserController {
     /**
-     * Handles user registration.
-     * @param {Object} req - The request object.
-     * @param {Object} res - The response object.
+     * Login user with email and password.
+     * @param {Request} req - Express request object.
+     * @param {Response} res - Express response object.
      */
-    async register(req, res) {
+    static async login(req, res) {
         try {
-            const userData = req.body;
-            const newUser = await UserService.registerUser(userData);
-            res.status(201).json(newUser);
+            const { email, password } = req.body;
+            const user = await UserService.authenticateUser(email, password);
+            if (user) {
+                // Generate JWT token
+                const token = UserService.generateToken(user);
+                return res.json({ token });
+            }
+            return res.status(401).json({ message: 'Invalid credentials' });
         } catch (error) {
-            res.status(400).json({ message: error.message });
+            return res.status(500).json({ message: error.message });
         }
     }
 
     /**
-     * Handles user login.
-     * @param {Object} req - The request object.
-     * @param {Object} res - The response object.
+     * Register a new user.
+     * @param {Request} req - Express request object.
+     * @param {Response} res - Express response object.
      */
-    async login(req, res) {
+    static async register(req, res) {
         try {
-            const { email, password } = req.body;
-            const token = await UserService.loginUser(email, password);
-            res.status(200).json({ token });
+            const userData = req.body;
+            const newUser = await UserService.createUser(userData);
+            return res.status(201).json(newUser);
         } catch (error) {
-            res.status(401).json({ message: error.message });
+            return res.status(500).json({ message: error.message });
         }
     }
 }
 
-module.exports = new UserController();
+module.exports = UserController;
