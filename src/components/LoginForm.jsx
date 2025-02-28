@@ -1,43 +1,50 @@
 import React, { useState } from 'react';
 
-/**
- * LoginForm component handles user login.
- * It captures user credentials and triggers the login process.
- *
- * @returns {JSX.Element} The rendered LoginForm component.
- */
 const LoginForm = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // TODO: Implement login logic using authService
-        console.log('Logging in with', username, password);
+        // Implement login logic here
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+            if (!response.ok) {
+                throw new Error('Login failed');
+            }
+            const data = await response.json();
+            // Handle successful login (e.g., save token, redirect)
+        } catch (err) {
+            setError(err.message);
+        }
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <label htmlFor="username">Username:</label>
+                <label>Email:</label>
                 <input
-                    type="text"
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                 />
             </div>
             <div>
-                <label htmlFor="password">Password:</label>
+                <label>Password:</label>
                 <input
                     type="password"
-                    id="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
             </div>
+            {error && <p style={{color: 'red'}}>{error}</p>}
             <button type="submit">Login</button>
         </form>
     );
