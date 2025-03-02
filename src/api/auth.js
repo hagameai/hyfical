@@ -1,39 +1,32 @@
-'use strict';
+// auth.js
+// This file handles user authentication logic, including login and registration.
 
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 
-/**
- * User authentication functions
- */
+const SECRET_KEY = process.env.SECRET_KEY || 'your_secret_key';
 
-/**
- * Registers a new user and hashes the password
- * @param {Object} req - Request object containing user data
- * @param {Object} res - Response object
- */
-const registerUser = async (req, res) => {
+// Register a new user
+async function registerUser(req, res) {
     const { username, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, password: hashedPassword });
     await newUser.save();
-    res.status(201).json({ message: 'User registered successfully.' });
-};
+    res.status(201).send('User registered successfully');
+}
 
-/**
- * Authenticates a user and issues a JWT token
- * @param {Object} req - Request object containing login credentials
- * @param {Object} res - Response object
- */
-const loginUser = async (req, res) => {
+// Login user
+async function loginUser(req, res) {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-        return res.status(401).json({ message: 'Invalid credentials.' });
-    }
-    const token = jwt.sign({ userId: user._id }, 'secretKey', { expiresIn: '1h' });
+    if (!user) return res.status(404).send('User not found');
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) return res.status(401).send('Invalid password');
+
+    const token = jwt.sign({ id: user._id }, SECRET_KEY);
     res.status(200).json({ token });
-};
+}
 
 module.exports = { registerUser, loginUser };
