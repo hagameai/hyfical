@@ -1,24 +1,34 @@
 import React, { useState } from 'react';
 
 /**
- * LoginForm Component
- * 
- * This component provides a form for user login. It captures
- * the user's email and password, and triggers the authentication
- * process when the form is submitted.
+ * LoginForm component for user authentication.
+ * This component handles user login functionality,
+ * including form submission and state management.
  */
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Perform authentication logic here
-        console.log('Logging in with', email, password);
+        // Logic for handling the login goes here
+        // For example, call the auth API and handle responses
+        try {
+            // Replace with actual authentication logic
+            console.log('Logging in with', email, password);
+            // Clear inputs on successful login
+            setEmail('');
+            setPassword('');
+        } catch (err) {
+            setError('Login failed. Please try again.');
+        }
     };
 
     return (
         <form onSubmit={handleSubmit}>
+            <h2>Login</h2>
+            {error && <p className="error">{error}</p>}
             <div>
                 <label htmlFor="email">Email:</label>
                 <input
