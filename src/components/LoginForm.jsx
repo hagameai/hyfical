@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 /**
- * LoginForm component.
- * This component handles user login via a form.
- * It captures the email and password, and triggers
- * the login action. Validation is included to ensure
- * the fields are filled out.
+ * LoginForm is a React component that allows users to log in to the application.
+ * It handles form submission and input validation.
  */
-const LoginForm = () => {
+const LoginForm = ({ onLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState(null);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = (event) => {
+        event.preventDefault();
         if (!email || !password) {
-            setError('Please fill in both fields.');
+            setError('Email and password are required.');
             return;
         }
-        // Logic to handle login (e.g., API call)
-        console.log('Submitting:', { email, password });
+        onLogin(email, password);
     };
 
     return (
@@ -30,6 +27,7 @@ const LoginForm = () => {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                 />
             </div>
             <div>
@@ -38,12 +36,17 @@ const LoginForm = () => {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                 />
             </div>
-            {error && <div style={{ color: 'red' }}>{error}</div>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <button type="submit">Login</button>
         </form>
     );
+};
+
+LoginForm.propTypes = {
+    onLogin: PropTypes.func.isRequired,
 };
 
 export default LoginForm;
