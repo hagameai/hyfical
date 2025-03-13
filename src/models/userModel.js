@@ -1,3 +1,5 @@
+// userModel.js
+
 const mongoose = require('mongoose');
 
 // Define the user schema for MongoDB
@@ -10,7 +12,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: true
     },
     email: {
         type: String,
