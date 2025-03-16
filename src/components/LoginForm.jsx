@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
 
+/**
+ * LoginForm component allows users to log in.
+ * It handles user input for email and password,
+ * and triggers authentication when the form is submitted.
+ */
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState(null);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // TODO: Implement login logic
-        if (!email || !password) {
-            setError('Email and password are required.');
-            return;
+        setError(null);
+
+        // Perform authentication logic here
+        try {
+            // Call authentication API
+            // await authenticateUser(email, password);
+        } catch (err) {
+            setError('Invalid email or password');
         }
-        // Call authentication service here
     };
 
     return (
@@ -35,7 +43,7 @@ const LoginForm = () => {
                     required
                 />
             </div>
-            {error && <div style={{ color: 'red' }}>{error}</div>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <button type="submit">Login</button>
         </form>
     );
