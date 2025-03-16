@@ -1,43 +1,38 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-/**
- * LoginForm component allows users to log in.
- * It handles user input for email and password,
- * and triggers authentication when the form is submitted.
- */
-const LoginForm = () => {
+const LoginForm = ({ onLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(null);
+    const [error, setError] = useState('');
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError(null);
-
-        // Perform authentication logic here
-        try {
-            // Call authentication API
-            // await authenticateUser(email, password);
-        } catch (err) {
-            setError('Invalid email or password');
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // Call the onLogin function passed as a prop
+        if (email && password) {
+            onLogin(email, password);
+        } else {
+            setError('Please enter both email and password.');
         }
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <label>Email:</label>
+                <label htmlFor="email">Email:</label>
                 <input
                     type="email"
+                    id="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                 />
             </div>
             <div>
-                <label>Password:</label>
+                <label htmlFor="password">Password:</label>
                 <input
                     type="password"
+                    id="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -47,6 +42,10 @@ const LoginForm = () => {
             <button type="submit">Login</button>
         </form>
     );
+};
+
+LoginForm.propTypes = {
+    onLogin: PropTypes.func.isRequired,
 };
 
 export default LoginForm;
