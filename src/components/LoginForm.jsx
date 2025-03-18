@@ -1,50 +1,43 @@
 import React, { useState } from 'react';
 
+/**
+ * LoginForm component for user authentication.
+ * Allows users to input their credentials and submit for login.
+ */
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(null);
+    const [error, setError] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Call the authentication API here
-        if (!email || !password) {
-            setError('Email and password are required.');
-            return;
-        }
-        // Assume we have an authService to handle login
-        authService.login(email, password)
-            .then(response => {
-                // Handle successful login
-                console.log(response);
-            })
-            .catch(err => {
-                // Handle login error
-                setError(err.message);
-            });
+        // Handle login logic here, e.g., call authentication API
+        // If login fails, update the error state
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <label>Email:</label>
+                <label htmlFor="email">Email:</label>
                 <input
                     type="email"
+                    id="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                 />
             </div>
             <div>
-                <label>Password:</label>
+                <label htmlFor="password">Password:</label>
                 <input
                     type="password"
+                    id="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
             </div>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <div className="error">{error}</div>}
             <button type="submit">Login</button>
         </form>
     );
