@@ -2,28 +2,34 @@ import React, { useState } from 'react';
 
 /**
  * LoginForm component for user authentication.
- * Allows users to input their credentials and submit for login.
+ * Allows users to enter their credentials and submit for login.
  */
 const LoginForm = () => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle login logic here, e.g., call authentication API
-        // If login fails, update the error state
+        // Handle login logic here, such as calling an API to authenticate the user
+        if (username && password) {
+            console.log('Logging in:', { username, password });
+            // Reset error on successful login
+            setError('');
+        } else {
+            setError('Please enter both username and password.');
+        }
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <label htmlFor="email">Email:</label>
+                <label htmlFor="username">Username:</label>
                 <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    type="text"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     required
                 />
             </div>
@@ -37,7 +43,7 @@ const LoginForm = () => {
                     required
                 />
             </div>
-            {error && <div className="error">{error}</div>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <button type="submit">Login</button>
         </form>
     );
