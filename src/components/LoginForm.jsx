@@ -1,21 +1,15 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-/**
- * LoginForm component for user authentication.
- * This component allows users to enter their credentials
- * and submit them for authentication.
- */
-const LoginForm = () => {
+const LoginForm = ({ onLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // TODO: Implement login functionality
         try {
-            // Call the authentication API
-            // await authService.login(email, password);
+            await onLogin({ email, password });
         } catch (err) {
             setError('Login failed. Please try again.');
         }
@@ -43,10 +37,14 @@ const LoginForm = () => {
                     required
                 />
             </div>
-            {error && <p>{error}</p>}
+            {error && <p className="error">{error}</p>}
             <button type="submit">Login</button>
         </form>
     );
+};
+
+LoginForm.propTypes = {
+    onLogin: PropTypes.func.isRequired,
 };
 
 export default LoginForm;
