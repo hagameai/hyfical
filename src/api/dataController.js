@@ -1,57 +1,88 @@
-// dataController.js
-
 const DataModel = require('../models/dataModel');
 
 /**
- * Get all data entries
- * @returns {Promise<Array>} List of data entries
+ * Controller for handling data-related operations.
  */
-const getAllData = async () => {
-    return await DataModel.find();
-};
+class DataController {
+    /**
+     * Create a new data entry.
+     * @param {Object} req - Request object containing data details.
+     * @param {Object} res - Response object.
+     */
+    async createData(req, res) {
+        try {
+            const data = new DataModel(req.body);
+            await data.save();
+            res.status(201).json(data);
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    }
 
-/**
- * Get a specific data entry by ID
- * @param {string} id - The ID of the data entry
- * @returns {Promise<Object>} The data entry
- */
-const getDataById = async (id) => {
-    return await DataModel.findById(id);
-};
+    /**
+     * Get all data entries.
+     * @param {Object} req - Request object.
+     * @param {Object} res - Response object.
+     */
+    async getAllData(req, res) {
+        try {
+            const data = await DataModel.find();
+            res.status(200).json(data);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
 
-/**
- * Create a new data entry
- * @param {Object} data - The data to create
- * @returns {Promise<Object>} The created data entry
- */
-const createData = async (data) => {
-    const newData = new DataModel(data);
-    return await newData.save();
-};
+    /**
+     * Get a specific data entry by ID.
+     * @param {Object} req - Request object containing data ID.
+     * @param {Object} res - Response object.
+     */
+    async getDataById(req, res) {
+        try {
+            const data = await DataModel.findById(req.params.id);
+            if (!data) {
+                return res.status(404).json({ message: 'Data not found' });
+            }
+            res.status(200).json(data);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
 
-/**
- * Update an existing data entry
- * @param {string} id - The ID of the data entry to update
- * @param {Object} data - The updated data
- * @returns {Promise<Object>} The updated data entry
- */
-const updateData = async (id, data) => {
-    return await DataModel.findByIdAndUpdate(id, data, { new: true });
-};
+    /**
+     * Update a data entry by ID.
+     * @param {Object} req - Request object containing data ID and update details.
+     * @param {Object} res - Response object.
+     */
+    async updateData(req, res) {
+        try {
+            const data = await DataModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+            if (!data) {
+                return res.status(404).json({ message: 'Data not found' });
+            }
+            res.status(200).json(data);
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    }
 
-/**
- * Delete a data entry
- * @param {string} id - The ID of the data entry to delete
- * @returns {Promise<Object>} The deleted data entry
- */
-const deleteData = async (id) => {
-    return await DataModel.findByIdAndDelete(id);
-};
+    /**
+     * Delete a data entry by ID.
+     * @param {Object} req - Request object containing data ID.
+     * @param {Object} res - Response object.
+     */
+    async deleteData(req, res) {
+        try {
+            const data = await DataModel.findByIdAndDelete(req.params.id);
+            if (!data) {
+                return res.status(404).json({ message: 'Data not found' });
+            }
+            res.status(204).send();
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+}
 
-module.exports = {
-    getAllData,
-    getDataById,
-    createData,
-    updateData,
-    deleteData
-};
+module.exports = new DataController();
