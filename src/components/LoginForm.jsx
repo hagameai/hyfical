@@ -6,12 +6,13 @@ const LoginForm = ({ onLogin }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        try {
-            await onLogin({ email, password });
-        } catch (err) {
-            setError('Login failed. Please try again.');
+        // Logic to handle login with email and password
+        if (email && password) {
+            onLogin({ email, password });
+        } else {
+            setError('Please enter both email and password.');
         }
     };
 
@@ -37,7 +38,7 @@ const LoginForm = ({ onLogin }) => {
                     required
                 />
             </div>
-            {error && <p className="error">{error}</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <button type="submit">Login</button>
         </form>
     );
