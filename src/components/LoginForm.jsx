@@ -1,47 +1,45 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 
-const LoginForm = ({ onLogin }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+/**
+ * LoginForm component for user authentication.
+ * Provides fields for username and password input,
+ * and handles form submission.
+ */
+const LoginForm = () => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Reset error message
-    setError('');
-    // Call the onLogin function provided as a prop
-    onLogin(email, password).catch(err => setError(err.message));
-  };
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // TODO: Implement authentication logic
+        console.log(`Username: ${username}, Password: ${password}`);
+    };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Email:</label>
-        <input 
-          type="email" 
-          value={email} 
-          onChange={(e) => setEmail(e.target.value)} 
-          required
-        />
-      </div>
-      <div>
-        <label>Password:</label>
-        <input 
-          type="password" 
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
-          required
-        />
-      </div>
-      {error && <div style={{color: 'red'}}>{error}</div>}
-      <button type="submit">Login</button>
-    </form>
-  );
-};
-
-LoginForm.propTypes = {
-  onLogin: PropTypes.func.isRequired,
+    return (
+        <form onSubmit={handleSubmit}>
+            <div>
+                <label htmlFor="username">Username:</label>
+                <input
+                    type="text"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                />
+            </div>
+            <div>
+                <label htmlFor="password">Password:</label>
+                <input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    );
 };
 
 export default LoginForm;
