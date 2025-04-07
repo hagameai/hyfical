@@ -1,33 +1,49 @@
+// auth.js
+// This file contains the implementation of the user authentication logic, including login and registration functions.
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 
-/**
- * Authenticate user and return JWT token.
- * @param {string} email - User email
- * @param {string} password - User password
- * @returns {string} JWT token
- */
-const authenticateUser = async (email, password) => {
-    const user = await User.findOne({ email });
-    if (!user) throw new Error('User not found');
+// Function to register a new user
+async function registerUser(req, res) {
+    const { username, password } = req.body;
+    try {
+        // Check if user exists
+        const existingUser = await User.findOne({ username });
+        if (existingUser) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = new User({ username, password: hashedPassword });
+        await newUser.save();
+        res.status(201).json({ message: 'User registered successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+}
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) throw new Error('Invalid credentials');
+// Function to login a user
+async function loginUser(req, res) {
+    const { username, password } = req.body;
+    try {
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid credentials' });
+        }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Invalid credentials' });
+        }
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.json({ token });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+}
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    return token;
+module.exports = {
+    registerUser,
+    loginUser
 };
-
-/**
- * Register a new user.
- * @param {Object} userData - User registration data
- * @returns {Object} New user object
- */
-const registerUser = async (userData) => {
-    const hashedPassword = await bcrypt.hash(userData.password, 10);
-    const newUser = new User({ ...userData, password: hashedPassword });
-    return await newUser.save();
-};
-
-module.exports = { authenticateUser, registerUser };
