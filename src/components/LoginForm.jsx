@@ -1,38 +1,37 @@
 import React, { useState } from 'react';
 
 const LoginForm = () => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(null);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        // Implement your authentication logic here.
-        // Example: Call the API to log in the user
-        try {
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ email, password }),
-            });
-            if (!response.ok) throw new Error('Login failed');
-            // Handle successful login
-        } catch (err) {
-            setError(err.message);
-        }
+        // Add authentication logic here using authService
+        console.log('Submitted:', { username, password });
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <label>Email:</label>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <label htmlFor="username">Username:</label>
+                <input
+                    type="text"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                />
             </div>
             <div>
-                <label>Password:</label>
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <label htmlFor="password">Password:</label>
+                <input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
             </div>
-            {error && <p style={{color: 'red'}}>{error}</p>}
             <button type="submit">Login</button>
         </form>
     );
