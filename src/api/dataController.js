@@ -1,88 +1,77 @@
+// dataController.js
+
 const DataModel = require('../models/dataModel');
 
 /**
- * Controller for handling data-related operations.
+ * Create a new data entry.
+ * @param {Object} req - The request object containing data details.
+ * @param {Object} res - The response object.
  */
-class DataController {
-    /**
-     * Create a new data entry.
-     * @param {Object} req - Request object containing data details.
-     * @param {Object} res - Response object.
-     */
-    async createData(req, res) {
-        try {
-            const data = new DataModel(req.body);
-            await data.save();
-            res.status(201).json(data);
-        } catch (error) {
-            res.status(400).json({ message: error.message });
-        }
+exports.createData = async (req, res) => {
+    try {
+        const newData = new DataModel(req.body);
+        await newData.save();
+        res.status(201).json({ message: 'Data created successfully', data: newData });
+    } catch (error) {
+        res.status(500).json({ message: 'Error creating data', error });
     }
+};
 
-    /**
-     * Get all data entries.
-     * @param {Object} req - Request object.
-     * @param {Object} res - Response object.
-     */
-    async getAllData(req, res) {
-        try {
-            const data = await DataModel.find();
-            res.status(200).json(data);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
+/**
+ * Retrieve all data entries.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
+exports.getAllData = async (req, res) => {
+    try {
+        const dataEntries = await DataModel.find();
+        res.status(200).json(dataEntries);
+    } catch (error) {
+        res.status(500).json({ message: 'Error retrieving data', error });
     }
+};
 
-    /**
-     * Get a specific data entry by ID.
-     * @param {Object} req - Request object containing data ID.
-     * @param {Object} res - Response object.
-     */
-    async getDataById(req, res) {
-        try {
-            const data = await DataModel.findById(req.params.id);
-            if (!data) {
-                return res.status(404).json({ message: 'Data not found' });
-            }
-            res.status(200).json(data);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
+/**
+ * Retrieve a specific data entry by ID.
+ * @param {Object} req - The request object containing the data ID.
+ * @param {Object} res - The response object.
+ */
+exports.getDataById = async (req, res) => {
+    try {
+        const dataEntry = await DataModel.findById(req.params.id);
+        if (!dataEntry) return res.status(404).json({ message: 'Data not found' });
+        res.status(200).json(dataEntry);
+    } catch (error) {
+        res.status(500).json({ message: 'Error retrieving data', error });
     }
+};
 
-    /**
-     * Update a data entry by ID.
-     * @param {Object} req - Request object containing data ID and update details.
-     * @param {Object} res - Response object.
-     */
-    async updateData(req, res) {
-        try {
-            const data = await DataModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
-            if (!data) {
-                return res.status(404).json({ message: 'Data not found' });
-            }
-            res.status(200).json(data);
-        } catch (error) {
-            res.status(400).json({ message: error.message });
-        }
+/**
+ * Update a specific data entry by ID.
+ * @param {Object} req - The request object containing the data ID and updated data.
+ * @param {Object} res - The response object.
+ */
+exports.updateDataById = async (req, res) => {
+    try {
+        const updatedData = await DataModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!updatedData) return res.status(404).json({ message: 'Data not found' });
+        res.status(200).json({ message: 'Data updated successfully', data: updatedData });
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating data', error });
     }
+};
 
-    /**
-     * Delete a data entry by ID.
-     * @param {Object} req - Request object containing data ID.
-     * @param {Object} res - Response object.
-     */
-    async deleteData(req, res) {
-        try {
-            const data = await DataModel.findByIdAndDelete(req.params.id);
-            if (!data) {
-                return res.status(404).json({ message: 'Data not found' });
-            }
-            res.status(204).send();
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
+/**
+ * Delete a specific data entry by ID.
+ * @param {Object} req - The request object containing the data ID.
+ * @param {Object} res - The response object.
+ */
+exports.deleteDataById = async (req, res) => {
+    try {
+        const deletedData = await DataModel.findByIdAndDelete(req.params.id);
+        if (!deletedData) return res.status(404).json({ message: 'Data not found' });
+        res.status(200).json({ message: 'Data deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting data', error });
     }
-}
-
-module.exports = new DataController();
+};
