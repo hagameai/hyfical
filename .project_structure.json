@@ -2,48 +2,61 @@
   "version": "1.0",  
   "project_info": {    
     "name": "hyfical",    
-    "description": "A web application for user management and authentication, providing features such as login, registration, and data management.",    
+    "description": "A user authentication system built with Node.js and React, featuring secure authentication using JWT and MongoDB for data storage.",    
     "repository_url": "git@github.com-hagame:hagameai/hyfical.git",    
-    "technology_stack": ["JavaScript", "React", "Node.js", "Express", "MongoDB"],    
+    "technology_stack": [      
+      "Node.js",      
+      "React",      
+      "JWT",      
+      "MongoDB",      
+      "Express"    
+    ],    
     "project_type": "Web Application",    
-    "development_status": "In Progress"  
+    "development_status": "Active"  
   },  
   "core_features": [    
     {      
-      "feature_name": "User Authentication",      
-      "description": "Allows users to register, log in, and manage sessions securely.",      
+      "feature_name": "User Registration",      
+      "description": "Allows users to create an account with username, email, and password.",      
       "implementation_status": "completed",      
-      "related_files": ["src/api/auth.js", "src/utils/authService.js", "src/models/userModel.js"]    
+      "related_files": ["src/api/auth.js", "src/models/userModel.js", "src/utils/authService.js"]    
+    },    
+    {      
+      "feature_name": "User Login",      
+      "description": "Enables users to log in using their credentials, and provides a JWT token for session management.",      
+      "implementation_status": "completed",      
+      "related_files": ["src/api/auth.js", "src/components/LoginForm.js", "src/utils/authService.js"]    
     },    
     {      
       "feature_name": "Data Management",      
-      "description": "Enables users to create, read, update, and delete their data entries.",      
-      "implementation_status": "planned",      
-      "related_files": ["src/models/dataModel.js", "src/api/dataController.js"]    
-    },    
-    {      
-      "feature_name": "User Interface",      
-      "description": "Provides a responsive interface for users to interact with the application.",      
+      "description": "Handles user-specific data storage and retrieval with MongoDB.",      
       "implementation_status": "in_progress",      
-      "related_files": ["src/components/LoginForm.js"]    
+      "related_files": ["src/models/dataModel.js", "src/api/dataController.js"]    
     }  
   ],  
   "implementation_plan": {    
     "phases": [      
       {        
         "phase": "Phase 1",        
-        "description": "Set up the core authentication features and user interface components.",        
-        "tasks": ["Implement user registration", "Implement user login", "Create the login form component"],        
-        "estimated_files": 6      
+        "description": "Initial implementation of user authentication features.",        
+        "tasks": [          
+          "Implement user registration",          
+          "Implement user login",          
+          "Set up JWT for secure sessions"        
+        ],        
+        "estimated_files": 5      
       },      
       {        
         "phase": "Phase 2",        
-        "description": "Develop data management features and improve user experience.",        
-        "tasks": ["Create data model", "Implement data CRUD operations", "Enhance UI for data display"],        
-        "estimated_files": 8      
+        "description": "Implementation of data management functionalities.",        
+        "tasks": [          
+          "Implement data storage for users",          
+          "Create API endpoints for data retrieval"        
+        ],        
+        "estimated_files": 3      
       }    
     ],    
-    "next_priorities": ["Complete user interface components", "Integrate data management features", "Implement unit tests for authentication"]  
+    "next_priorities": ["Complete data management features", "Enhance error handling", "Write unit tests for new functionalities"]  
   },  
   "recommended_structure": {    
     "src/": {      
@@ -53,7 +66,7 @@
         "models/": "Data models and schemas",        
         "utils/": "Utility functions and helpers",        
         "api/": "API endpoints and handlers",        
-        "components/": "Reusable UI components"      
+        "components/": "React components for UI"      
       },      
       "priority": "high"    
     },    
@@ -61,8 +74,7 @@
       "description": "Test files",      
       "file_types": ["*_test.js"],      
       "subdirectories": {        
-        "unit/": "Unit tests",        
-        "integration/": "Integration tests"      
+        "unit/": "Unit tests for individual modules"      
       },      
       "priority": "high"    
     },    
@@ -74,23 +86,23 @@
     }  
   },  
   "development_guidelines": {    
-    "coding_standards": ["Use camelCase for variables", "Keep components stateless where possible", "Use async/await for asynchronous code"],    
-    "file_naming_conventions": "Use kebab-case for filenames",    
-    "commit_message_format": "conventional_commits",    
-    "testing_requirements": "Write unit tests for all core features"  
+    "coding_standards": ["Use ES6 syntax", "Follow a consistent style guide"],    
+    "file_naming_conventions": "Use camelCase for file names",    
+    "commit_message_format": "Use conventional commits",    
+    "testing_requirements": "All new features must have corresponding unit tests"  
   },  
   "suggested_next_files": [    
     {      
       "file_path": "src/api/dataController.js",      
-      "purpose": "Handle CRUD operations for user data",      
+      "purpose": "Handle API requests related to user data management.",      
       "priority": "high",      
       "dependencies": ["src/models/dataModel.js"]    
     },    
     {      
-      "file_path": "src/components/DataDisplay.js",      
-      "purpose": "Component to display user data",      
+      "file_path": "tests/unit/dataController.test.js",      
+      "purpose": "Unit tests for the data controller functionality.",      
       "priority": "medium",      
-      "dependencies": []    
+      "dependencies": ["src/api/dataController.js"]    
     }  
   ]
 }
