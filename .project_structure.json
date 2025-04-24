@@ -2,61 +2,48 @@
   "version": "1.0",  
   "project_info": {    
     "name": "hyfical",    
-    "description": "A user authentication system built with Node.js and React, featuring secure authentication using JWT and MongoDB for data storage.",    
+    "description": "A user authentication system built with Node.js and React, featuring user login and registration, utilizing JWT for authentication and MongoDB for database storage.",    
     "repository_url": "git@github.com-hagame:hagameai/hyfical.git",    
-    "technology_stack": [      
-      "Node.js",      
-      "React",      
-      "JWT",      
-      "MongoDB",      
-      "Express"    
-    ],    
+    "technology_stack": ["Node.js", "React", "JWT", "MongoDB", "Axios"],    
     "project_type": "Web Application",    
     "development_status": "Active"  
   },  
   "core_features": [    
     {      
       "feature_name": "User Registration",      
-      "description": "Allows users to create an account with username, email, and password.",      
+      "description": "Allows users to create an account with a username, email, and password.",      
       "implementation_status": "completed",      
-      "related_files": ["src/api/auth.js", "src/models/userModel.js", "src/utils/authService.js"]    
+      "related_files": ["src/api/auth.js", "src/utils/authService.js"]    
     },    
     {      
       "feature_name": "User Login",      
-      "description": "Enables users to log in using their credentials, and provides a JWT token for session management.",      
+      "description": "Enables users to log in using their credentials and receive a JWT for authentication.",      
       "implementation_status": "completed",      
-      "related_files": ["src/api/auth.js", "src/components/LoginForm.js", "src/utils/authService.js"]    
+      "related_files": ["src/api/auth.js", "src/components/LoginForm.js"]    
     },    
     {      
-      "feature_name": "Data Management",      
-      "description": "Handles user-specific data storage and retrieval with MongoDB.",      
+      "feature_name": "Token Management",      
+      "description": "Handles the creation, storage, and validation of JWTs for session management.",      
       "implementation_status": "in_progress",      
-      "related_files": ["src/models/dataModel.js", "src/api/dataController.js"]    
+      "related_files": ["src/utils/authService.js"]    
     }  
   ],  
   "implementation_plan": {    
     "phases": [      
       {        
-        "phase": "Phase 1",        
-        "description": "Initial implementation of user authentication features.",        
-        "tasks": [          
-          "Implement user registration",          
-          "Implement user login",          
-          "Set up JWT for secure sessions"        
-        ],        
+        "phase": "Phase 1 - Core Features",        
+        "description": "Implement basic user authentication features such as registration and login.",        
+        "tasks": ["Implement registration endpoint", "Implement login endpoint", "Create user model"],        
         "estimated_files": 5      
       },      
       {        
-        "phase": "Phase 2",        
-        "description": "Implementation of data management functionalities.",        
-        "tasks": [          
-          "Implement data storage for users",          
-          "Create API endpoints for data retrieval"        
-        ],        
+        "phase": "Phase 2 - Token Management",        
+        "description": "Implement JWT token management for secure sessions.",        
+        "tasks": ["Implement token creation on login", "Validate token during API requests"],        
         "estimated_files": 3      
       }    
     ],    
-    "next_priorities": ["Complete data management features", "Enhance error handling", "Write unit tests for new functionalities"]  
+    "next_priorities": ["Complete token management feature", "Add unit tests for authentication logic"]  
   },  
   "recommended_structure": {    
     "src/": {      
@@ -66,7 +53,7 @@
         "models/": "Data models and schemas",        
         "utils/": "Utility functions and helpers",        
         "api/": "API endpoints and handlers",        
-        "components/": "React components for UI"      
+        "components/": "React components"      
       },      
       "priority": "high"    
     },    
@@ -74,7 +61,7 @@
       "description": "Test files",      
       "file_types": ["*_test.js"],      
       "subdirectories": {        
-        "unit/": "Unit tests for individual modules"      
+        "unit/": "Unit tests"      
       },      
       "priority": "high"    
     },    
@@ -86,23 +73,23 @@
     }  
   },  
   "development_guidelines": {    
-    "coding_standards": ["Use ES6 syntax", "Follow a consistent style guide"],    
-    "file_naming_conventions": "Use camelCase for file names",    
-    "commit_message_format": "Use conventional commits",    
-    "testing_requirements": "All new features must have corresponding unit tests"  
+    "coding_standards": ["Use ES6 syntax", "Follow React best practices", "Consistent naming conventions"],    
+    "file_naming_conventions": "Use camelCase for files and functions",    
+    "commit_message_format": "conventional_commits",    
+    "testing_requirements": "All features must have unit tests"  
   },  
   "suggested_next_files": [    
     {      
-      "file_path": "src/api/dataController.js",      
-      "purpose": "Handle API requests related to user data management.",      
+      "file_path": "src/tests/unit/tokenManagement.test.js",      
+      "purpose": "Unit tests for token management logic",      
       "priority": "high",      
-      "dependencies": ["src/models/dataModel.js"]    
+      "dependencies": ["src/utils/authService.js"]    
     },    
     {      
-      "file_path": "tests/unit/dataController.test.js",      
-      "purpose": "Unit tests for the data controller functionality.",      
+      "file_path": "src/api/token.js",      
+      "purpose": "API endpoint for token validation",      
       "priority": "medium",      
-      "dependencies": ["src/api/dataController.js"]    
+      "dependencies": []    
     }  
   ]
 }
