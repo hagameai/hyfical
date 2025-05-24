@@ -1,31 +1,41 @@
 const request = require('supertest');
-const app = require('../../app'); // Make sure to adjust the path to your main app file
-const PasswordResetController = require('../../api/passwordResetController');
+const app = require('../../../../app'); // Make sure to import your app instance
+const passwordResetController = require('../../utils/passwordResetController');
 
 describe('Password Reset Controller', () => {
-    describe('POST /api/reset-password', () => {
-        it('should send a reset email for a valid user', async () => {
-            const response = await request(app)
-                .post('/api/reset-password')
-                .send({ email: 'testuser@example.com' });
-            expect(response.status).toBe(200);
-            expect(response.body.message).toBe('Reset email sent successfully.');
-        });
+    it('should request a password reset', async () => {
+        const response = await request(app)
+            .post('/api/password-reset')
+            .send({ email: 'user@example.com' });
 
-        it('should return an error if the email is not registered', async () => {
-            const response = await request(app)
-                .post('/api/reset-password')
-                .send({ email: 'nonexistentuser@example.com' });
-            expect(response.status).toBe(404);
-            expect(response.body.message).toBe('User not found.');
-        });
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe('Password reset email sent.');
+    });
 
-        it('should return an error if email is invalid', async () => {
-            const response = await request(app)
-                .post('/api/reset-password')
-                .send({ email: 'invalid-email' });
-            expect(response.status).toBe(400);
-            expect(response.body.message).toBe('Invalid email format.');
-        });
+    it('should fail if email is not registered', async () => {
+        const response = await request(app)
+            .post('/api/password-reset')
+            .send({ email: 'nonexistent@example.com' });
+
+        expect(response.status).toBe(404);
+        expect(response.body.message).toBe('Email not found.');
+    });
+
+    it('should reset the password', async () => {
+        const response = await request(app)
+            .post('/api/password-reset/confirm')
+            .send({ token: 'validToken', newPassword: 'newStrongPassword123!' });
+
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe('Password has been reset successfully.');
+    });
+
+    it('should fail to reset the password with an invalid token', async () => {
+        const response = await request(app)
+            .post('/api/password-reset/confirm')
+            .send({ token: 'invalidToken', newPassword: 'newStrongPassword123!' });
+
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe('Invalid or expired token.');
     });
 });
